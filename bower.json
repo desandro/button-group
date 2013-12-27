@@ -1,19 +1,17 @@
 {
-  "name": "isotope-input-group",
+  "name": "button-group",
   "version": "0.0.0",
   "authors": [
-    "David DeSandro <desandrocodes@gmail.com>"
+    "David DeSandro"
   ],
-  "description": "Sets up buttons and inputs for Isotope",
+  "description": "buttons like checkboxes and radio inputs",
   "keywords": [
-    "isotope",
     "buttons",
     "inputs"
   ],
   "license": "MIT",
   "dependencies": {
-    "classie": "~1.0.0",
-    "eventie": "~1.0.4",
-    "matches-selector": "desandro/matches-selector#>=1 <2"
+    "classie": ">=1 <2",
+    "eventie": ">=1 <2"
   }
 }
