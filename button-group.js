@@ -39,6 +39,8 @@ function makeArray( obj ) {
 function ButtonGroup( element, options ) {
   this.element = element;
   this.options = extend( {}, this.options );
+  this.getDeclaredOptions();
+
   extend( this.options, options );
 
   this._create();
@@ -47,6 +49,25 @@ function ButtonGroup( element, options ) {
 ButtonGroup.prototype.options = {
 };
 
+// get options set in HTML
+ButtonGroup.prototype.getDeclaredOptions = function() {
+
+  var elem = this.element;
+  var attr = elem.getAttribute('data-button-group-options');
+  var options;
+  try {
+    options = attr && JSON.parse( attr );
+  } catch ( error ) {
+    // log error, do not initialize
+    if ( console ) {
+      console.error( 'Error parsing data-button-group-options on ' +
+        elem.nodeName.toLowerCase() + ( elem.id ? '#' + elem.id : '' ) + ': ' +
+        error );
+    }
+  }
+
+  extend( this.options, options );
+};
 
 ButtonGroup.prototype._create = function() {
   this.getButtons();
@@ -88,17 +109,9 @@ ButtonGroup.prototype.handleEvent = function( event ) {
 };
 
 ButtonGroup.prototype.onclick = function( event ) {
-  // console.log('clicked');
-  var target = event.target;
-  // if ( event.target === this.element ) {
-  //   return;
-  // }
-
   // get clicked button
-
-
   // crawl up DOM until button is found
-  var elem = target;
+  var elem = event.target;
   var clickedButton, i, button;
   var len = this.buttons.length;
   while ( !clickedButton && elem !== this.element ) {
@@ -112,21 +125,20 @@ ButtonGroup.prototype.onclick = function( event ) {
     elem = elem.parentNode;
   }
 
-  if ( clickedButton ) {
-    if ( this.isRadio ) {
-      for ( i=0; i < len; i++ ) {
-        button = this.buttons[i];
-        if ( button !== clickedButton ) {
-          button.check( false );
-        }
-      }
-    }
-    clickedButton.click();
-
-  } else {
-    console.log('no button');
+  if ( !clickedButton ) {
+    return;
   }
 
+  // uncheck other buttons
+  if ( this.isRadio ) {
+    for ( i=0; i < len; i++ ) {
+      button = this.buttons[i];
+      if ( button !== clickedButton ) {
+        button.check( false );
+      }
+    }
+  }
+  clickedButton.click();
 };
 
 // -------------------------- Button -------------------------- //
