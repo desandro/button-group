@@ -68,14 +68,15 @@
 
 <script src="../bower_components/eventie/eventie.js"></script>
 <script src="../bower_components/classie/classie.js"></script>
-<script src="on-button-group-click.js"></script>
+<script src="../button-group.js"></script>
 <script>
   
 window.onload = function() {
   var buttonGroups = document.querySelectorAll('.button-group');
   for ( var i=0, len = buttonGroups.length; i < len; i++ ) {
-    var buttonGroup = buttonGroups[i];
-    eventie.bind( buttonGroup, 'click', onButtonGroupClick );
+    var buttonGroupElem = buttonGroups[i];
+    new ButtonGroup( buttonGroupElem );
+    // eventie.bind( buttonGroup, 'click', onButtonGroupClick );
   }
 }
 
