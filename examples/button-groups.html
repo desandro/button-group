@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>button groups</title>
+
+  <link rel="stylesheet" href="examples.css" />
+
+</head>
+<body>
+
+  <h1>button groups</h1>
+
+  color
+  grade
+  stars
+  rating
+  price
+
+  <h2>Radio inputs</h2>
+
+  <div class="button-group">
+    <label class="button">
+      <input type="radio" name="filter" value="*" checked="checked" /> show all
+    </label>
+    <label class="button">
+      <input type="radio" name="filter" value=".red" /> red
+    </label>
+    <label class="button">
+      <input type="radio" name="filter" value=".number-9" /> 9
+    </label>
+    <label class="button">
+      <input type="radio" name="filter" value=".letter-a" /> A
+    </label>
+  </div>
+
+  <h2>Checkbox inputs</h2>
+
+  <div class="button-group">
+    <label class="button">
+      <input type="checkbox" value=".red" /> red
+    </label>
+    <label class="button">
+      <input type="checkbox" value=".number-9" /> 9
+    </label>
+    <label class="button">
+      <input type="checkbox" value=".letter-a" /> A
+    </label>
+  </div>
+
+  <h2>buttons radio behavoir</h2>
+
+  <div class="button-group" data-button-group-options='{ "behavoir": "radio" }'>
+    <button class="button">show all</button>
+    <button class="button">red</button>
+    <button class="button">9</button>
+    <button class="button">A</button>
+  </div>
+
+  <h2>buttons checkbox behavoir</h2>
+
+  <div class="button-group">
+    <button class="button">red</button>
+    <button class="button">9</button>
+    <button class="button">A</button>
+  </div>
+
+<script src="../bower_components/eventie/eventie.js"></script>
+<script src="../bower_components/classie/classie.js"></script>
+<script src="on-button-group-click.js"></script>
+<script>
+  
+window.onload = function() {
+  var buttonGroups = document.querySelectorAll('.button-group');
+  for ( var i=0, len = buttonGroups.length; i < len; i++ ) {
+    var buttonGroup = buttonGroups[i];
+    eventie.bind( buttonGroup, 'click', onButtonGroupClick );
+  }
+}
+
+
+
+</script>
+
+</body>
+</html>
