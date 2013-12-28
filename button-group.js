@@ -49,18 +49,23 @@ function ButtonGroup( element, options ) {
 ButtonGroup.prototype.options = {
 };
 
+ButtonGroup.prototype.settings = {
+  namespace: 'button-group'
+};
+
 // get options set in HTML
 ButtonGroup.prototype.getDeclaredOptions = function() {
 
   var elem = this.element;
-  var attr = elem.getAttribute('data-button-group-options');
+  var attrName = 'data-' + this.settings.namespace + '-options';
+  var attr = elem.getAttribute( attrName );
   var options;
   try {
     options = attr && JSON.parse( attr );
   } catch ( error ) {
     // log error, do not initialize
     if ( console ) {
-      console.error( 'Error parsing data-button-group-options on ' +
+      console.error( 'Error parsing ' + attrName + ' on ' +
         elem.nodeName.toLowerCase() + ( elem.id ? '#' + elem.id : '' ) + ': ' +
         error );
     }
@@ -134,7 +139,7 @@ ButtonGroup.prototype.onclick = function( event ) {
     for ( i=0; i < len; i++ ) {
       button = this.buttons[i];
       if ( button !== clickedButton ) {
-        button.check( false );
+        button.uncheck();
       }
     }
   }
@@ -179,12 +184,17 @@ Button.prototype.click = function() {
 };
 
 Button.prototype.toggle = function() {
-  this.check( !this.isChecked );
+  this[ this.isChecked ? 'uncheck' : 'check' ]();
 };
 
-Button.prototype.check = function( isChecked ) {
-  classie[ isChecked ? 'add' : 'remove' ]( this.element, 'is-checked' );
-  this.isChecked = isChecked;
+Button.prototype.check = function() {
+  classie.add( this.element, 'is-checked' );
+  this.isChecked = true;
+};
+
+Button.prototype.uncheck = function() {
+  classie.remove( this.element, 'is-checked' );
+  this.isChecked = false;
 };
 
 window.ButtonGroup = ButtonGroup;
