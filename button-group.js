@@ -1,4 +1,4 @@
-/*global classie: false, eventie: false*/
+/*global classie: false, eventie: false, EventEmitter: false */
 
 ( function( window ) { 'use strict';
 
@@ -46,6 +46,8 @@ function ButtonGroup( element, options ) {
   this._create();
 }
 
+ButtonGroup.prototype = new EventEmitter();
+
 ButtonGroup.prototype.options = {
 };
 
@@ -75,8 +77,6 @@ ButtonGroup.prototype.getDeclaredOptions = function() {
 };
 
 ButtonGroup.prototype._create = function() {
-  this.getButtons();
-
   this.isRadio = this.options.behavior === 'radio';
   // check if first input is radio
   if ( !this.isRadio ) {
@@ -84,6 +84,8 @@ ButtonGroup.prototype._create = function() {
     var type = input && input.getAttribute('type');
     this.isRadio = type && type === 'radio';
   }
+
+  this.getButtons();
 
   eventie.bind( this.element, 'click', this );
 };
@@ -129,13 +131,14 @@ ButtonGroup.prototype.onclick = function( event ) {
     }
     elem = elem.parentNode;
   }
-
-  if ( !clickedButton ) {
+  // bail if not a button clicked
+  // or clicked button was already checked radio button
+  if ( !clickedButton || ( this.isRadio && clickedButton.isChecked ) ) {
     return;
   }
 
-  // uncheck other buttons
   if ( this.isRadio ) {
+    // uncheck other buttons
     for ( i=0; i < len; i++ ) {
       button = this.buttons[i];
       if ( button !== clickedButton ) {
@@ -143,7 +146,9 @@ ButtonGroup.prototype.onclick = function( event ) {
       }
     }
   }
+
   clickedButton.click();
+  this.emit( 'change', this, event, clickedButton );
 };
 
 // -------------------------- Button -------------------------- //

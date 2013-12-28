@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "classie": ">=1 <2",
-    "eventie": ">=1 <2"
+    "eventie": ">=1 <2",
+    "eventEmitter": ">=3 <5"
   }
 }
